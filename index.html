@@ -1,926 +1,599 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BomFlux — Intelligent Project Management</title>
-  <meta name="description" content="BomFlux gives project managers real-time budget intelligence, risk tracking, procurement oversight, and AI-powered insights — all in one platform." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --brand:       #2563eb;
-      --brand-dark:  #1d4ed8;
-      --brand-light: #eff6ff;
-      --accent:      #06b6d4;
-      --green:       #22c55e;
-      --amber:       #f59e0b;
-      --red:         #ef4444;
-      --ink:         #0f172a;
-      --muted:       #64748b;
-      --border:      #e2e8f0;
-      --surface:     #f8fafc;
-      --white:       #ffffff;
-      --radius:      12px;
-      --shadow-sm:   0 1px 3px rgba(0,0,0,.08);
-      --shadow-md:   0 4px 16px rgba(0,0,0,.10);
-      --shadow-lg:   0 16px 48px rgba(0,0,0,.12);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      color: var(--ink);
-      background: var(--white);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── NAV ──────────────────────────────────── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .logo {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--brand);
-      text-decoration: none;
-      letter-spacing: -0.5px;
-    }
-    .logo span { color: var(--ink); }
-    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-    .nav-links a {
-      text-decoration: none;
-      font-size: .875rem;
-      font-weight: 500;
-      color: var(--muted);
-      transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--ink); }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 22px;
-      border-radius: 8px;
-      font-size: .875rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all .2s;
-    }
-    .btn-primary {
-      background: var(--brand);
-      color: var(--white);
-    }
-    .btn-primary:hover { background: var(--brand-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--ink);
-      border: 1.5px solid var(--border);
-    }
-    .btn-ghost:hover { border-color: var(--brand); color: var(--brand); }
-
-    /* ── HERO ─────────────────────────────────── */
-    .hero {
-      padding: 96px 24px 80px;
-      text-align: center;
-      background: linear-gradient(160deg, #f0f7ff 0%, #ffffff 60%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -120px; right: -120px;
-      width: 480px; height: 480px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(37,99,235,.10) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -80px; left: -80px;
-      width: 320px; height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(6,182,212,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--brand-light);
-      color: var(--brand);
-      border-radius: 999px;
-      padding: 5px 14px;
-      font-size: .8rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
-    .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
-    h1 {
-      font-size: clamp(2.4rem, 5vw, 3.75rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.5px;
-      max-width: 820px;
-      margin: 0 auto 20px;
-    }
-    h1 .highlight { color: var(--brand); }
-    .hero-sub {
-      font-size: 1.15rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-    }
-    .hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-    .btn-lg { padding: 14px 30px; font-size: 1rem; border-radius: 10px; }
-
-    /* dashboard mockup */
-    .hero-visual {
-      margin: 64px auto 0;
-      max-width: 960px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-    }
-    .mock-topbar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .mock-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .mock-dot-r { background: #f87171; }
-    .mock-dot-y { background: #fbbf24; }
-    .mock-dot-g { background: #34d399; }
-    .mock-body {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      min-height: 340px;
-    }
-    .mock-sidebar {
-      background: #0f172a;
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .mock-nav-item {
-      border-radius: 7px;
-      padding: 9px 12px;
-      font-size: .78rem;
-      font-weight: 500;
-      color: #94a3b8;
-    }
-    .mock-nav-item.active { background: rgba(255,255,255,.08); color: #fff; }
-    .mock-content { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .mock-heading { font-size: .85rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
-    .mock-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .mock-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-    }
-    .mock-card-label { font-size: .68rem; color: var(--muted); margin-bottom: 4px; }
-    .mock-card-value { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
-    .mock-card-sub { font-size: .68rem; margin-top: 2px; }
-    .text-green { color: var(--green); }
-    .text-amber { color: var(--amber); }
-    .text-red   { color: var(--red); }
-    .mock-table { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-    .mock-table-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 80px;
-      padding: 10px 16px;
-      font-size: .72rem;
-      border-bottom: 1px solid var(--border);
-      align-items: center;
-      gap: 8px;
-    }
-    .mock-table-row:last-child { border-bottom: none; }
-    .mock-table-row.header { font-weight: 700; color: var(--muted); background: var(--white); }
-    .pill {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 999px;
-      font-size: .65rem;
-      font-weight: 600;
-    }
-    .pill-green { background: #dcfce7; color: #15803d; }
-    .pill-amber { background: #fef9c3; color: #b45309; }
-    .pill-red   { background: #fee2e2; color: #b91c1c; }
-    .mock-bar-wrap { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
-    .mock-bar { height: 100%; border-radius: 99px; }
-
-    /* ── LOGOS ────────────────────────────────── */
-    .logos-strip {
-      padding: 48px 24px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .logos-strip p { font-size: .8rem; color: var(--muted); font-weight: 500; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
-    .logos-row { display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap; }
-    .logo-placeholder {
-      font-size: .95rem;
-      font-weight: 700;
-      color: #cbd5e1;
-      letter-spacing: -0.3px;
-    }
-
-    /* ── SECTIONS ─────────────────────────────── */
-    section { padding: 96px 24px; }
-    .section-inner { max-width: 1160px; margin: 0 auto; }
-    .section-label {
-      display: inline-block;
-      font-size: .78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--brand);
-      margin-bottom: 12px;
-    }
-    h2 {
-      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.15;
-      max-width: 640px;
-    }
-    .section-sub {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 520px;
-      margin-top: 14px;
-      line-height: 1.7;
-    }
-
-    /* ── FEATURES ─────────────────────────────── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-top: 56px;
-    }
-    .feature-card {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      transition: box-shadow .2s, transform .2s;
-    }
-    .feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-    .feature-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-    }
-    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
-    .feature-card p  { font-size: .9rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── HOW IT WORKS ─────────────────────────── */
-    .how-bg { background: var(--surface); }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 32px;
-      margin-top: 56px;
-    }
-    .step { text-align: center; }
-    .step-number {
-      width: 52px; height: 52px;
-      border-radius: 50%;
-      background: var(--brand);
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-    }
-    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-    .step p  { font-size: .88rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── HEALTH PANEL ─────────────────────────── */
-    .health-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .health-pills { display: flex; flex-direction: column; gap: 14px; margin-top: 32px; }
-    .health-pill-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      font-size: .875rem;
-    }
-    .health-pill-row .name { font-weight: 600; }
-    .health-pill-row .meta { font-size: .75rem; color: var(--muted); margin-top: 2px; }
-
-    /* ── PRICING ──────────────────────────────── */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 56px;
-    }
-    .pricing-card {
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 32px;
-      background: var(--white);
-      position: relative;
-    }
-    .pricing-card.popular {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 4px rgba(37,99,235,.08);
-    }
-    .popular-badge {
-      position: absolute;
-      top: -13px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--brand);
-      color: #fff;
-      font-size: .72rem;
-      font-weight: 700;
-      padding: 4px 14px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .plan-name { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
-    .plan-price {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      margin: 10px 0 4px;
-    }
-    .plan-price sup { font-size: 1.2rem; font-weight: 600; vertical-align: super; }
-    .plan-period { font-size: .82rem; color: var(--muted); margin-bottom: 24px; }
-    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
-    .plan-features li {
-      font-size: .875rem;
-      color: var(--muted);
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-    .plan-features li.dim::before { color: #cbd5e1; }
-    .plan-features li.dim { color: #cbd5e1; }
-
-    /* ── TESTIMONIALS ─────────────────────────── */
-    .testimonials-bg { background: var(--surface); }
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 56px;
-    }
-    .testimonial {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-    }
-    .stars { color: #f59e0b; font-size: 1rem; margin-bottom: 14px; }
-    .testimonial p { font-size: .9rem; color: var(--ink); line-height: 1.7; margin-bottom: 20px; }
-    .avatar-row { display: flex; align-items: center; gap: 12px; }
-    .avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .8rem; font-weight: 700; color: #fff;
-    }
-    .avatar-name { font-size: .85rem; font-weight: 600; }
-    .avatar-title { font-size: .75rem; color: var(--muted); }
-
-    /* ── CTA ──────────────────────────────────── */
-    .cta-section {
-      text-align: center;
-      padding: 96px 24px;
-      background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 40%, #0284c7 100%);
-      color: #fff;
-    }
-    .cta-section h2 { color: #fff; margin: 0 auto 16px; }
-    .cta-section p { color: rgba(255,255,255,.75); font-size: 1.1rem; margin-bottom: 40px; }
-    .btn-white { background: #fff; color: var(--brand); }
-    .btn-white:hover { background: #f0f7ff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-    .cta-note { font-size: .8rem; color: rgba(255,255,255,.5); margin-top: 16px; }
-
-    /* ── FOOTER ───────────────────────────────── */
-    footer {
-      background: var(--ink);
-      color: #94a3b8;
-      padding: 64px 24px 40px;
-    }
-    .footer-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px;
-      padding-bottom: 48px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .footer-logo { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
-    .footer-tagline { font-size: .875rem; line-height: 1.65; }
-    .footer-col h4 { font-size: .8rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 16px; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-col a { text-decoration: none; font-size: .875rem; color: #94a3b8; transition: color .2s; }
-    .footer-col a:hover { color: #fff; }
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 32px;
-      font-size: .8rem;
-    }
-
-    /* ── RESPONSIVE ───────────────────────────── */
-    @media (max-width: 900px) {
-      .mock-body { grid-template-columns: 1fr; }
-      .mock-sidebar { display: none; }
-      .mock-cards { grid-template-columns: 1fr 1fr; }
-      .health-section { grid-template-columns: 1fr; gap: 40px; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    }
-    @media (max-width: 600px) {
-      .nav-links { display: none; }
-      h1 { letter-spacing: -.8px; }
-      .mock-cards { grid-template-columns: 1fr; }
-      .mock-table-row { grid-template-columns: 2fr 1fr 80px; }
-      .mock-table-row > *:nth-child(3),
-      .mock-table-row > *:nth-child(4) { display: none; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-    }
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Description" content="BomFlux gives project managers real-time budget intelligence, risk tracking, procurement oversight, and AI-powered insights — all in one platform.">
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2299.77">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.2px '.SF NS Mono'; color: #b6b5a8; -webkit-text-stroke: #b6b5a8}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.SF NS Mono'; color: #e5e7ec; -webkit-text-stroke: #e5e7ec}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.2px 'Helvetica Neue'; color: #b6b5a8; -webkit-text-stroke: #b6b5a8}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.SF NS Mono'; color: #e5e7ec; -webkit-text-stroke: #e5e7ec; background-color: #181817}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px '.SF NS Mono'; color: #e5e7ec; -webkit-text-stroke: #e5e7ec; background-color: #181817; min-height: 11.0px}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px '.SF NS'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #dbdad1; background-color: rgba(219, 218, 209, 0.15); min-height: 17.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px '.SF NS'; color: #858379; -webkit-text-stroke: #858379; min-height: 17.0px}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px '.SF NS'; color: #b6b5a8; -webkit-text-stroke: #b6b5a8; min-height: 12.0px}
+    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Georgia; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 14.0px}
+    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #b6b5a8; -webkit-text-stroke: #b6b5a8; min-height: 17.0px}
+    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 17.0px}
+    p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 15.0px}
+    p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px 'Helvetica Neue'; color: #858379; -webkit-text-stroke: #858379; min-height: 11.0px}
+    p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 14.0px 'Helvetica Neue'; color: #b6b5a8; -webkit-text-stroke: #b6b5a8; min-height: 17.0px}
+    p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 14.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 17.0px}
+    p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 10.5px '.SF NS'; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 12.0px}
+    span.s1 {font-kerning: none; background-color: #181817}
+    span.s2 {font-kerning: none; color: #5fa7ff; background-color: #181817; -webkit-text-stroke: 0px #5fa7ff}
+    span.s3 {font-kerning: none}
   </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="logo">Bom<span>Flux</span></a>
-    <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#how-it-works">How it works</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-    </ul>
-    <div style="display:flex;gap:10px;align-items:center;">
-      <a href="#" class="btn btn-ghost">Sign in</a>
-      <a href="#pricing" class="btn btn-primary">Start free trial</a>
-    </div>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="badge"><span class="dot"></span>Now with AI-powered forecasting</div>
-  <h1>Project management built for <span class="highlight">complex delivery</span></h1>
-  <p class="hero-sub">BomFlux unifies budget tracking, risk management, procurement oversight, and team coordination in one intelligent platform. Ship on time and on budget.</p>
-  <div class="hero-actions">
-    <a href="#pricing" class="btn btn-primary btn-lg">Start free — no credit card</a>
-    <a href="#features" class="btn btn-ghost btn-lg">See how it works</a>
-  </div>
-
-  <!-- Dashboard mockup -->
-  <div class="hero-visual">
-    <div class="mock-topbar">
-      <div class="mock-dot mock-dot-r"></div>
-      <div class="mock-dot mock-dot-y"></div>
-      <div class="mock-dot mock-dot-g"></div>
-      <span style="font-size:.72rem;color:#94a3b8;margin-left:12px;font-weight:500;">BomFlux — Project Dashboard</span>
-    </div>
-    <div class="mock-body">
-      <div class="mock-sidebar">
-        <div class="mock-nav-item active">Dashboard</div>
-        <div class="mock-nav-item">Budget Intelligence</div>
-        <div class="mock-nav-item">Risk Register</div>
-        <div class="mock-nav-item">Procurement</div>
-        <div class="mock-nav-item">Team</div>
-        <div class="mock-nav-item">Reports</div>
-        <div class="mock-nav-item">File Intelligence</div>
-        <div class="mock-nav-item">Notes</div>
-      </div>
-      <div class="mock-content">
-        <div class="mock-heading">Active Projects Overview</div>
-        <div class="mock-cards">
-          <div class="mock-card">
-            <div class="mock-card-label">Active Projects</div>
-            <div class="mock-card-value">12</div>
-            <div class="mock-card-sub text-green">+2 this month</div>
-          </div>
-          <div class="mock-card">
-            <div class="mock-card-label">Budget Utilised</div>
-            <div class="mock-card-value">68%</div>
-            <div class="mock-card-sub text-amber">On track</div>
-          </div>
-          <div class="mock-card">
-            <div class="mock-card-label">Open Risks</div>
-            <div class="mock-card-value">4</div>
-            <div class="mock-card-sub text-red">2 critical</div>
-          </div>
-          <div class="mock-card">
-            <div class="mock-card-label">Team Members</div>
-            <div class="mock-card-value">27</div>
-            <div class="mock-card-sub text-green">Fully staffed</div>
-          </div>
-        </div>
-        <div class="mock-table">
-          <div class="mock-table-row header">
-            <span>Project</span>
-            <span>Budget</span>
-            <span>Progress</span>
-            <span>Due</span>
-            <span>Health</span>
-          </div>
-          <div class="mock-table-row">
-            <span style="font-weight:600;font-size:.75rem;">Tower Block A</span>
-            <span>$2.4M</span>
-            <span>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:72%;background:#22c55e;"></div></div>
-            </span>
-            <span style="color:#64748b;">Aug 12</span>
-            <span><span class="pill pill-green">On track</span></span>
-          </div>
-          <div class="mock-table-row">
-            <span style="font-weight:600;font-size:.75rem;">Harbour Fit-out</span>
-            <span>$890K</span>
-            <span>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:58%;background:#f59e0b;"></div></div>
-            </span>
-            <span style="color:#64748b;">Jul 28</span>
-            <span><span class="pill pill-amber">At risk</span></span>
-          </div>
-          <div class="mock-table-row">
-            <span style="font-weight:600;font-size:.75rem;">Civic Centre Reno</span>
-            <span>$540K</span>
-            <span>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:91%;background:#22c55e;"></div></div>
-            </span>
-            <span style="color:#64748b;">Jun 30</span>
-            <span><span class="pill pill-green">On track</span></span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LOGOS -->
-<div class="logos-strip">
-  <p>Trusted by project teams worldwide</p>
-  <div class="logos-row">
-    <span class="logo-placeholder">Meridian Group</span>
-    <span class="logo-placeholder">CoreBuild</span>
-    <span class="logo-placeholder">Apex Projects</span>
-    <span class="logo-placeholder">Vantage PM</span>
-    <span class="logo-placeholder">Ironclad Civil</span>
-  </div>
-</div>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="section-inner">
-    <span class="section-label">Features</span>
-    <h2>Everything your team needs to deliver</h2>
-    <p class="section-sub">From first budget line to final handover, BomFlux gives you full visibility and control at every stage.</p>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon" style="background:#eff6ff;">💰</div>
-        <h3>Budget Intelligence</h3>
-        <p>Track planned vs. actual spend in real time. Detect budget drift early with automated variance alerts and AI-powered burn-rate forecasting.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:#fef9c3;">⚠️</div>
-        <h3>Risk Register</h3>
-        <p>Log, score, and monitor every risk with probability-impact matrices. Get automatic health score recalculation as risks evolve.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:#f0fdf4;">📦</div>
-        <h3>Procurement Tracker</h3>
-        <p>Keep tabs on every purchase order, supplier, and delivery. Tie procurement activity directly to budget lines and milestones.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:#fdf2f8;">📊</div>
-        <h3>Financial Performance</h3>
-        <p>Interactive dashboards show earned value, cost performance index, and forecast-to-complete — without the spreadsheet grind.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:#fff7ed;">🧠</div>
-        <h3>Foresight AI</h3>
-        <p>Our built-in AI assistant answers questions about your project data, drafts weekly reports, and surfaces issues before they escalate.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:#f0f9ff;">📁</div>
-        <h3>File Intelligence</h3>
-        <p>Upload drawings, specs, and contracts. BomFlux extracts key data, links documents to tasks, and makes everything instantly searchable.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how-it-works" class="how-bg">
-  <div class="section-inner">
-    <span class="section-label">How it works</span>
-    <h2>Up and running in minutes</h2>
-    <p class="section-sub">No complex onboarding. No consultants required. Just sign up, import your project, and start tracking.</p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>Create your project</h3>
-        <p>Enter project details — budget, timeline, team — or import from an existing spreadsheet in seconds.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>Add your data</h3>
-        <p>Log budget entries, risks, milestones, and procurement items. BomFlux calculates health scores automatically.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>Invite your team</h3>
-        <p>Role-based access means everyone sees exactly what they need — PMs, finance leads, and clients alike.</p>
-      </div>
-      <div class="step">
-        <div class="step-number">4</div>
-        <h3>Deliver with confidence</h3>
-        <p>Weekly AI reports, live dashboards, and proactive alerts keep every stakeholder informed and every project on track.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECT HEALTH -->
-<section>
-  <div class="section-inner">
-    <div class="health-section">
-      <div>
-        <span class="section-label">Project Health</span>
-        <h2>Know your project's true status at a glance</h2>
-        <p class="section-sub">BomFlux combines task completion, budget burn, open risks, and overdue milestones into a single traffic-light health score — no manual interpretation needed.</p>
-        <div class="health-pills">
-          <div class="health-pill-row">
-            <div>
-              <div class="name">Tower Block A</div>
-              <div class="meta">72% complete · $2.4M budget</div>
-            </div>
-            <span class="pill pill-green">Green</span>
-          </div>
-          <div class="health-pill-row">
-            <div>
-              <div class="name">Harbour Fit-out</div>
-              <div class="meta">58% complete · 2 critical risks</div>
-            </div>
-            <span class="pill pill-amber">Amber</span>
-          </div>
-          <div class="health-pill-row">
-            <div>
-              <div class="name">Westside Precinct</div>
-              <div class="meta">31% complete · budget at 88%</div>
-            </div>
-            <span class="pill pill-red">Red</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:32px;">
-          <div style="font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:20px;text-transform:uppercase;letter-spacing:.8px;">Health Score Breakdown</div>
-          <div style="display:flex;flex-direction:column;gap:18px;">
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:500;margin-bottom:6px;">
-                <span>Task Completion</span><span style="color:var(--green);">72%</span>
-              </div>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:72%;background:var(--green);"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:500;margin-bottom:6px;">
-                <span>Budget Utilisation</span><span style="color:var(--amber);">68%</span>
-              </div>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:68%;background:var(--amber);"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:500;margin-bottom:6px;">
-                <span>Risk Score</span><span style="color:var(--green);">Low</span>
-              </div>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:20%;background:var(--green);"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:.82rem;font-weight:500;margin-bottom:6px;">
-                <span>Milestone Adherence</span><span style="color:var(--green);">100%</span>
-              </div>
-              <div class="mock-bar-wrap"><div class="mock-bar" style="width:100%;background:var(--green);"></div></div>
-            </div>
-          </div>
-          <div style="margin-top:24px;background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-            <span style="font-size:1.4rem;">✅</span>
-            <div>
-              <div style="font-size:.82rem;font-weight:700;color:#15803d;">Overall Health: Green</div>
-              <div style="font-size:.75rem;color:#166534;margin-top:2px;">No immediate action required</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing" class="how-bg">
-  <div class="section-inner">
-    <span class="section-label">Pricing</span>
-    <h2>Simple, transparent pricing</h2>
-    <p class="section-sub">Start free. Scale as your portfolio grows. No surprises on your invoice.</p>
-
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <div class="plan-name">Trial</div>
-        <div class="plan-price"><sup>$</sup>0</div>
-        <div class="plan-period">Free · up to 5 projects</div>
-        <ul class="plan-features">
-          <li>Up to 5 active projects</li>
-          <li>Budget & task tracking</li>
-          <li>Risk register</li>
-          <li>Basic reporting</li>
-          <li class="dim">Procurement tracker</li>
-          <li class="dim">Foresight AI</li>
-          <li class="dim">File Intelligence</li>
-        </ul>
-        <a href="#" class="btn btn-ghost" style="width:100%;justify-content:center;">Get started free</a>
-      </div>
-
-      <div class="pricing-card popular">
-        <div class="popular-badge">Most popular</div>
-        <div class="plan-name">Professional</div>
-        <div class="plan-price"><sup>$</sup>79</div>
-        <div class="plan-period">per user / month · unlimited projects</div>
-        <ul class="plan-features">
-          <li>Unlimited projects</li>
-          <li>Budget Intelligence + forecasting</li>
-          <li>Full risk register</li>
-          <li>Procurement tracker</li>
-          <li>Financial performance dashboards</li>
-          <li>Foresight AI assistant</li>
-          <li>File Intelligence</li>
-        </ul>
-        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Start 14-day trial</a>
-      </div>
-
-      <div class="pricing-card">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-price" style="font-size:1.9rem;">Custom</div>
-        <div class="plan-period">Volume pricing · dedicated support</div>
-        <ul class="plan-features">
-          <li>Everything in Professional</li>
-          <li>SSO & advanced permissions</li>
-          <li>Custom integrations</li>
-          <li>Dedicated success manager</li>
-          <li>SLA guarantee</li>
-          <li>On-premise deployment option</li>
-          <li>Priority Foresight AI capacity</li>
-        </ul>
-        <a href="mailto:hello@bomflux.com" class="btn btn-ghost" style="width:100%;justify-content:center;">Contact sales</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="testimonials-bg">
-  <div class="section-inner">
-    <span class="section-label">Testimonials</span>
-    <h2>Teams that deliver, on time and on budget</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial">
-        <div class="stars">★★★★★</div>
-        <p>"BomFlux replaced three separate tools for us. Budget tracking, risk management, and reporting all in one place. Our PMs actually enjoy using it."</p>
-        <div class="avatar-row">
-          <div class="avatar" style="background:#2563eb;">JM</div>
-          <div>
-            <div class="avatar-name">James Mitchell</div>
-            <div class="avatar-title">Head of Projects, CoreBuild</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <div class="stars">★★★★★</div>
-        <p>"The health score feature alone is worth it. My board can see red, amber, green at a glance — no more thirty-page status reports."</p>
-        <div class="avatar-row">
-          <div class="avatar" style="background:#0891b2;">SR</div>
-          <div>
-            <div class="avatar-name">Sasha Rahman</div>
-            <div class="avatar-title">Programme Director, Vantage PM</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <div class="stars">★★★★★</div>
-        <p>"Foresight AI drafts our weekly reports in seconds. It used to take half a day. The time saving across a 40-project portfolio is enormous."</p>
-        <div class="avatar-row">
-          <div class="avatar" style="background:#7c3aed;">TK</div>
-          <div>
-            <div class="avatar-name">Tayla Kowalski</div>
-            <div class="avatar-title">Senior PM, Apex Projects</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="cta-section">
-  <div class="section-inner">
-    <h2>Ready to take control of your projects?</h2>
-    <p>Join hundreds of project teams already using BomFlux to deliver on time and on budget.</p>
-    <a href="#pricing" class="btn btn-white btn-lg">Start your free trial</a>
-    <div class="cta-note">No credit card required · 14-day trial · Cancel any time</div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo">BomFlux</div>
-        <p class="footer-tagline">Intelligent project management for teams that deliver complex work on time and on budget.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Product</h4>
-        <ul>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#">Changelog</a></li>
-          <li><a href="#">Roadmap</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="mailto:hello@bomflux.com">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Security</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>&copy; 2026 BomFlux. All rights reserved.</span>
-      <span>Built for project managers who mean business.</span>
-    </div>
-  </div>
-</footer>
-
+<p class="p1"><span class="s1">bash</span></p>
+<p class="p2"><span class="s2">cat</span><span class="s1"> /mnt/user-data/outputs/index.html</span></p>
+<p class="p3"><span class="s1">Output</span></p>
+<p class="p4"><span class="s3">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p4"><span class="s3">&lt;html lang="en"&gt;</span></p>
+<p class="p4"><span class="s3">&lt;head&gt;</span></p>
+<p class="p4"><span class="s3">&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p4"><span class="s3">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p4"><span class="s3">&lt;title&gt;BomFlux Foresight — AI Project Intelligence&lt;/title&gt;</span></p>
+<p class="p4"><span class="s3">&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</span></p>
+<p class="p4"><span class="s3">&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</span></p>
+<p class="p4"><span class="s3">&lt;style&gt;</span></p>
+<p class="p4"><span class="s3">*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}</span></p>
+<p class="p4"><span class="s3">html{scroll-behavior:smooth}</span></p>
+<p class="p4"><span class="s3">body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}</span></p>
+<p class="p4"><span class="s3">:root{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--bg:#0a0a0a;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--card:#111111;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--border:rgba(255,255,255,0.08);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--border-md:rgba(255,255,255,0.14);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--muted:#666;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--mid:#999;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>--light:#ccc;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* NAV */</span></p>
+<p class="p4"><span class="s3">nav{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>position:fixed;top:0;left:0;right:0;z-index:200;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>height:60px;display:flex;align-items:center;justify-content:space-between;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>padding:0 48px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>background:rgba(10,10,10,0.95);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>backdrop-filter:blur(16px);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>border-bottom:1px solid var(--border);</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.nav-logo{height:26px;width:auto;display:block;image-rendering:-webkit-optimize-contrast;cursor:pointer}</span></p>
+<p class="p4"><span class="s3">.nav-links{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:2px}</span></p>
+<p class="p4"><span class="s3">.nav-links button{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>background:none;border:none;cursor:pointer;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>color:var(--muted);font-family:'Inter',sans-serif;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>font-size:.84rem;padding:7px 16px;border-radius:6px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>transition:color .15s,background .15s;letter-spacing:-.01em;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.nav-links button:hover{color:#fff;background:rgba(255,255,255,.05)}</span></p>
+<p class="p4"><span class="s3">.nav-links button.active{color:#fff}</span></p>
+<p class="p4"><span class="s3">.nav-right{display:flex;gap:8px;align-items:center}</span></p>
+<p class="p4"><span class="s3">.btn-nav-ghost{padding:8px 16px;border-radius:6px;font-size:.82rem;font-weight:400;color:var(--mid);text-decoration:none;border:1px solid var(--border);transition:color .15s,border-color .15s}</span></p>
+<p class="p4"><span class="s3">.btn-nav-ghost:hover{color:#fff;border-color:var(--border-md)}</span></p>
+<p class="p4"><span class="s3">.btn-nav-solid{padding:8px 18px;border-radius:6px;font-size:.82rem;font-weight:600;color:#000;text-decoration:none;background:#fff;transition:opacity .15s}</span></p>
+<p class="p4"><span class="s3">.btn-nav-solid:hover{opacity:.85}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* PAGES */</span></p>
+<p class="p4"><span class="s3">.page{display:none;min-height:100vh;padding-top:60px}</span></p>
+<p class="p4"><span class="s3">.page.active{display:block}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* ── HOME ── */</span></p>
+<p class="p4"><span class="s3">#page-home{background:var(--bg)}</span></p>
+<p class="p4"><span class="s3">#page-home.active{display:flex;flex-direction:column}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">.hero{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>flex:1;display:flex;flex-direction:column;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>align-items:center;justify-content:center;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>text-align:center;padding:100px 40px 64px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>position:relative;overflow:hidden;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.hero::before{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>content:'';position:absolute;inset:0;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>background-image:radial-gradient(rgba(255,255,255,0.07) 1px,transparent 1px);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>background-size:40px 40px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 30%,transparent 100%);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>pointer-events:none;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.hero-inner{position:relative;z-index:1;max-width:780px}</span></p>
+<p class="p4"><span class="s3">.hero-label{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>display:inline-block;font-size:.72rem;font-weight:500;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>letter-spacing:.14em;text-transform:uppercase;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>color:var(--muted);border:1px solid var(--border);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>padding:5px 14px;border-radius:100px;margin-bottom:40px;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.hero-h1{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>font-size:clamp(3rem,7vw,5.5rem);font-weight:700;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>line-height:1.02;letter-spacing:-.04em;color:#fff;margin-bottom:12px;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.hero-h1 .sub-line{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>display:block;font-size:clamp(1.4rem,3.5vw,2.6rem);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>font-weight:300;color:var(--mid);letter-spacing:-.02em;margin-top:10px;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.hero-p{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>font-size:1rem;color:var(--muted);font-weight:300;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>line-height:1.75;max-width:520px;margin:28px auto 44px;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}</span></p>
+<p class="p4"><span class="s3">.btn-white{padding:13px 26px;border-radius:8px;font-size:.9rem;font-weight:600;color:#000;text-decoration:none;background:#fff;transition:opacity .15s,transform .15s;display:inline-block;border:none;cursor:pointer;font-family:'Inter',sans-serif}</span></p>
+<p class="p4"><span class="s3">.btn-white:hover{opacity:.88;transform:translateY(-1px)}</span></p>
+<p class="p4"><span class="s3">.btn-outline-w{padding:13px 26px;border-radius:8px;font-size:.9rem;font-weight:400;color:#fff;text-decoration:none;background:transparent;border:1px solid var(--border-md);transition:border-color .15s,transform .15s;display:inline-block}</span></p>
+<p class="p4"><span class="s3">.btn-outline-w:hover{border-color:rgba(255,255,255,.4);transform:translateY(-1px)}</span></p>
+<p class="p4"><span class="s3">.hero-note{font-size:.75rem;color:var(--muted);letter-spacing:-.01em}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* Strip */</span></p>
+<p class="p4"><span class="s3">.strip{background:#111;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;white-space:nowrap}</span></p>
+<p class="p4"><span class="s3">.strip-inner{display:inline-flex;animation:scroll-strip 28s linear infinite}</span></p>
+<p class="p4"><span class="s3">.strip-item{font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 32px}</span></p>
+<p class="p4"><span class="s3">.strip-item.lit{color:var(--light)}</span></p>
+<p class="p4"><span class="s3">@keyframes scroll-strip{from{transform:translateX(0)}to{transform:translateX(-50%)}}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* Three pillars on home */</span></p>
+<p class="p4"><span class="s3">.home-pillars{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:repeat(3,1fr);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>gap:1px;background:var(--border);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>border-top:1px solid var(--border);</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.pillar{padding:36px 40px;background:var(--bg);transition:background .2s}</span></p>
+<p class="p4"><span class="s3">.pillar:hover{background:#111}</span></p>
+<p class="p4"><span class="s3">.pillar-n{font-size:.68rem;font-weight:600;letter-spacing:.1em;color:var(--muted);margin-bottom:14px}</span></p>
+<p class="p4"><span class="s3">.pillar h3{font-size:.95rem;font-weight:600;color:var(--light);margin-bottom:8px;line-height:1.3}</span></p>
+<p class="p4"><span class="s3">.pillar p{font-size:.82rem;color:var(--muted);line-height:1.6;font-weight:300}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* ── FORESIGHT PAGE ── */</span></p>
+<p class="p4"><span class="s3">#page-foresight{background:var(--bg)}</span></p>
+<p class="p4"><span class="s3">.page-wrap{max-width:1080px;margin:0 auto;padding:72px 48px}</span></p>
+<p class="p4"><span class="s3">.s-label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}</span></p>
+<p class="p4"><span class="s3">.s-h2{font-size:clamp(2rem,4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;color:#fff;margin-bottom:16px}</span></p>
+<p class="p4"><span class="s3">.s-sub{font-size:.95rem;color:var(--muted);font-weight:300;line-height:1.7;max-width:500px;margin-bottom:56px}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">.feat-table{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:64px}</span></p>
+<p class="p4"><span class="s3">.feat-row{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:200px 1fr 120px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>border-bottom:1px solid var(--border);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>transition:background .15s;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.feat-row:last-child{border-bottom:none}</span></p>
+<p class="p4"><span class="s3">.feat-row:hover{background:#111}</span></p>
+<p class="p4"><span class="s3">.feat-n{padding:28px 24px 28px 28px;font-size:.68rem;font-weight:600;letter-spacing:.1em;color:var(--muted);border-right:1px solid var(--border);display:flex;align-items:flex-start;padding-top:30px}</span></p>
+<p class="p4"><span class="s3">.feat-body{padding:28px 32px;border-right:1px solid var(--border)}</span></p>
+<p class="p4"><span class="s3">.feat-body h3{font-size:.9rem;font-weight:600;color:var(--light);margin-bottom:8px}</span></p>
+<p class="p4"><span class="s3">.feat-body p{font-size:.84rem;color:var(--muted);line-height:1.65;font-weight:300}</span></p>
+<p class="p4"><span class="s3">.feat-tag{padding:28px 24px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:flex-start;padding-top:30px}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">.junior-block{</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:1fr 1fr;gap:64px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>border:1px solid var(--border);border-radius:14px;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>overflow:hidden;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">.jb-left{padding:48px;background:#0f0f0f;border-right:1px solid var(--border)}</span></p>
+<p class="p4"><span class="s3">.jb-left .s-label{margin-bottom:16px}</span></p>
+<p class="p4"><span class="s3">.jb-left .s-h2{font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:8px}</span></p>
+<p class="p4"><span class="s3">.jb-em{font-size:.9rem;font-style:italic;font-weight:300;color:var(--mid);margin-bottom:20px}</span></p>
+<p class="p4"><span class="s3">.jb-body{font-size:.875rem;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:28px}</span></p>
+<p class="p4"><span class="s3">.jb-right{padding:48px;display:flex;flex-direction:column;gap:0}</span></p>
+<p class="p4"><span class="s3">.cap{padding:20px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:24px 1fr;gap:14px}</span></p>
+<p class="p4"><span class="s3">.cap:last-child{border-bottom:none}</span></p>
+<p class="p4"><span class="s3">.cap-n{font-size:.65rem;font-weight:600;letter-spacing:.08em;color:var(--muted);padding-top:2px}</span></p>
+<p class="p4"><span class="s3">.cap-t{font-size:.84rem;font-weight:600;color:var(--light);margin-bottom:4px}</span></p>
+<p class="p4"><span class="s3">.cap-d{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* ── PRICING PAGE ── */</span></p>
+<p class="p4"><span class="s3">#page-pricing{background:var(--bg)}</span></p>
+<p class="p4"><span class="s3">.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}</span></p>
+<p class="p4"><span class="s3">.pc{background:#111;border:1px solid var(--border);border-radius:14px;padding:36px 28px;position:relative;transition:border-color .2s}</span></p>
+<p class="p4"><span class="s3">.pc:hover{border-color:var(--border-md)}</span></p>
+<p class="p4"><span class="s3">.pc.pop{border-color:rgba(255,255,255,.22);background:#141414}</span></p>
+<p class="p4"><span class="s3">.pop-tag{position:absolute;top:-11px;left:24px;background:#fff;color:#000;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 12px;border-radius:100px}</span></p>
+<p class="p4"><span class="s3">.pc-tier{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}</span></p>
+<p class="p4"><span class="s3">.pc-price{font-size:2.6rem;font-weight:700;letter-spacing:-.04em;color:#fff;line-height:1;margin-bottom:4px}</span></p>
+<p class="p4"><span class="s3">.pc-price sup{font-size:1.1rem;vertical-align:super}</span></p>
+<p class="p4"><span class="s3">.pc-price sub{font-size:.85rem;font-weight:300;color:var(--muted)}</span></p>
+<p class="p4"><span class="s3">.pc-per{font-size:.78rem;color:var(--muted);margin-bottom:24px}</span></p>
+<p class="p4"><span class="s3">.pc-div{height:1px;background:var(--border);margin-bottom:20px}</span></p>
+<p class="p4"><span class="s3">.pc-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:28px}</span></p>
+<p class="p4"><span class="s3">.pc-feats li{font-size:.82rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start;line-height:1.4}</span></p>
+<p class="p4"><span class="s3">.pc-feats li::before{content:'–';color:#444;flex-shrink:0;margin-top:1px}</span></p>
+<p class="p4"><span class="s3">.pc.pop .pc-feats li{color:var(--mid)}</span></p>
+<p class="p4"><span class="s3">.btn-pc-w{display:block;width:100%;padding:11px;text-align:center;border-radius:6px;font-size:.82rem;font-weight:600;text-decoration:none;background:#fff;color:#000;transition:opacity .15s;border:none;cursor:pointer;font-family:'Inter',sans-serif}</span></p>
+<p class="p4"><span class="s3">.btn-pc-w:hover{opacity:.85}</span></p>
+<p class="p4"><span class="s3">.btn-pc-g{display:block;width:100%;padding:11px;text-align:center;border-radius:6px;font-size:.82rem;font-weight:400;text-decoration:none;background:transparent;color:var(--mid);border:1px solid var(--border);transition:color .15s,border-color .15s}</span></p>
+<p class="p4"><span class="s3">.btn-pc-g:hover{color:#fff;border-color:var(--border-md)}</span></p>
+<p class="p4"><span class="s3">.price-note{display:flex;gap:32px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}</span></p>
+<p class="p4"><span class="s3">.pn{font-size:.78rem;color:var(--muted)}.pn strong{color:var(--light);font-weight:500}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* ── CONTACT PAGE ── */</span></p>
+<p class="p4"><span class="s3">#page-contact{background:var(--bg)}</span></p>
+<p class="p4"><span class="s3">.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}</span></p>
+<p class="p4"><span class="s3">.contact-left p{font-size:.9rem;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:40px}</span></p>
+<p class="p4"><span class="s3">.clinks{display:flex;flex-direction:column;gap:0}</span></p>
+<p class="p4"><span class="s3">.clink{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:padding-left .15s}</span></p>
+<p class="p4"><span class="s3">.clink:hover{padding-left:6px}</span></p>
+<p class="p4"><span class="s3">.clink-l{display:flex;flex-direction:column;gap:3px}</span></p>
+<p class="p4"><span class="s3">.clink-type{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}</span></p>
+<p class="p4"><span class="s3">.clink-val{font-size:.875rem;font-weight:400;color:var(--light)}</span></p>
+<p class="p4"><span class="s3">.clink-arrow{font-size:.8rem;color:var(--muted)}</span></p>
+<p class="p4"><span class="s3">.form-row{margin-bottom:18px}</span></p>
+<p class="p4"><span class="s3">.form-label{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}</span></p>
+<p class="p4"><span class="s3">.form-input,.form-textarea{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:300;color:#fff;outline:none;transition:border-color .15s}</span></p>
+<p class="p4"><span class="s3">.form-input::placeholder,.form-textarea::placeholder{color:#333}</span></p>
+<p class="p4"><span class="s3">.form-input:focus,.form-textarea:focus{border-color:rgba(255,255,255,.3)}</span></p>
+<p class="p4"><span class="s3">.form-textarea{resize:none;height:100px}</span></p>
+<p class="p4"><span class="s3">.btn-submit{margin-top:28px;padding:12px 28px;background:#fff;color:#000;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.02em;border:1px solid #fff;cursor:pointer;border-radius:6px;transition:background .15s,color .15s}</span></p>
+<p class="p4"><span class="s3">.btn-submit:hover{background:transparent;color:#fff}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* FOOTER */</span></p>
+<p class="p4"><span class="s3">footer{background:#070707;border-top:1px solid var(--border);padding:32px 48px}</span></p>
+<p class="p4"><span class="s3">.fi{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}</span></p>
+<p class="p4"><span class="s3">.f-logo{height:20px;width:auto;opacity:.3;image-rendering:-webkit-optimize-contrast}</span></p>
+<p class="p4"><span class="s3">.f-copy{font-size:.72rem;color:#333;margin-top:5px}</span></p>
+<p class="p4"><span class="s3">.f-links{display:flex;gap:20px;list-style:none}</span></p>
+<p class="p4"><span class="s3">.f-links a{font-size:.75rem;color:#333;text-decoration:none;transition:color .15s}</span></p>
+<p class="p4"><span class="s3">.f-links a:hover{color:var(--muted)}</span></p>
+<p class="p4"><span class="s3">.f-social a{color:#333;text-decoration:none;font-size:.75rem;display:flex;align-items:center;gap:6px;transition:color .15s}</span></p>
+<p class="p4"><span class="s3">.f-social a:hover{color:var(--muted)}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">/* RESPONSIVE */</span></p>
+<p class="p4"><span class="s3">@media(max-width:860px){</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>nav{padding:0 20px}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.nav-links button{padding:7px 10px;font-size:.78rem}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.page-wrap{padding:48px 20px}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.home-pillars{grid-template-columns:1fr}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.feat-row{grid-template-columns:1fr}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.feat-n{border-right:none;border-bottom:1px solid var(--border);padding:20px 20px 12px}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.feat-body{border-right:none}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.feat-tag{display:none}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.junior-block{grid-template-columns:1fr}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.jb-left{border-right:none;border-bottom:1px solid var(--border)}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.price-grid{grid-template-columns:1fr}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.contact-grid{grid-template-columns:1fr;gap:48px}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>footer{padding:24px 20px}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.fi{flex-direction:column;align-items:flex-start}</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>.btn-nav-ghost{display:none}</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">&lt;/style&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/head&gt;</span></p>
+<p class="p4"><span class="s3">&lt;body&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;nav&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;img src="data:image/png;base64,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" alt="BomFlux" class="nav-logo" onclick="showPage('home')"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="nav-links"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;button class="active" onclick="showPage('home')"&gt;Home&lt;/button&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;button onclick="showPage('foresight')"&gt;Foresight&lt;/button&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;button onclick="showPage('pricing')"&gt;Pricing&lt;/button&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;button onclick="showPage('contact')"&gt;Contact&lt;/button&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="nav-right"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;a href="https://foresight.bomflux.com" class="btn-nav-ghost" target="_blank"&gt;Demo&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;a href="https://foresight.bomflux.com/signup" class="btn-nav-solid" target="_blank"&gt;Start Free Trial&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/nav&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;!-- HOME --&gt;</span></p>
+<p class="p4"><span class="s3">&lt;div id="page-home" class="page active"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="hero"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="hero-inner"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="hero-label"&gt;Engineering AI &amp;nbsp;·&amp;nbsp; Foresight by BomFlux&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;h1 class="hero-h1"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>Complete visibility&lt;br&gt;across every project.</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;span class="sub-line"&gt;Act on intelligence. Not on instinct.&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/h1&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;p class="hero-p"&gt;BomFlux builds AI tools for engineering firms. Our flagship product, Foresight, monitors your entire project portfolio around the clock — surfacing risks, tracking budgets, and giving your team the intelligence to act early, every time.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="hero-ctas"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;button class="btn-white" onclick="showPage('foresight')"&gt;Explore Foresight&lt;/button&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;a href="https://foresight.bomflux.com" class="btn-outline-w" target="_blank"&gt;View Demo →&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;p class="hero-note"&gt;14-day free trial &amp;nbsp;·&amp;nbsp; No credit card required &amp;nbsp;·&amp;nbsp; Cancel anytime&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="strip"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="strip-inner"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;AI Risk Intelligence&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Financial Performance&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;Foresight Junior&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Meeting Intelligence&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;NEC4 Contracts&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Automated Reports&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;PRINCE2&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Portfolio Monitoring&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;AI Risk Intelligence&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Financial Performance&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;Foresight Junior&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Meeting Intelligence&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;NEC4 Contracts&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Automated Reports&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item lit"&gt;PRINCE2&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="strip-item"&gt;Portfolio Monitoring&lt;/span&gt;&lt;span class="strip-item"&gt;·&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="home-pillars"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="pillar"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="pillar-n"&gt;01&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;h3&gt;AI Risk Intelligence&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;p&gt;Continuously monitors every project and surfaces risks before they escalate — no manual review required.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="pillar"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="pillar-n"&gt;02&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;h3&gt;Financial Performance&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;p&gt;Real-time budget and margin visibility across your entire portfolio, not just at month end.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="pillar"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="pillar-n"&gt;03&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;h3&gt;Foresight Junior&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;p&gt;Your AI Project Director — senior-level intelligence on any project, available 24/7.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/div&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;!-- FORESIGHT --&gt;</span></p>
+<p class="p4"><span class="s3">&lt;div id="page-foresight" class="page"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="page-wrap"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;span class="s-label"&gt;Foresight&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;h2 class="s-h2"&gt;Project intelligence,&lt;br&gt;running 24/7.&lt;/h2&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;p class="s-sub"&gt;Foresight monitors every project in your portfolio continuously — surfacing budget risks, flagging issues early, and handling the reporting your team shouldn't have to do manually.&lt;/p&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="feat-table"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="feat-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-n"&gt;01 &amp;nbsp;/&amp;nbsp; Risk&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-body"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;h3&gt;AI Risk Intelligence&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;p&gt;Foresight monitors every project continuously, surfacing risks before they become costly. No manual review — it prioritises what needs your attention and flags it the moment it matters.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-tag"&gt;Always on&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="feat-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-n"&gt;02 &amp;nbsp;/&amp;nbsp; Finance&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-body"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;h3&gt;Financial Performance&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;p&gt;Full budget and margin visibility across your entire portfolio in real time. Track spend velocity, forecast overruns, and understand your financial position — not just at month end.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-tag"&gt;Real time&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="feat-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-n"&gt;03 &amp;nbsp;/&amp;nbsp; Reports&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-body"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;h3&gt;Automated Reports&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;p&gt;Professional weekly status reports generated automatically every Monday. Your team gets their time back. Your clients receive accurate, consistent updates without any manual effort.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-tag"&gt;Every Monday&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="feat-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-n"&gt;04 &amp;nbsp;/&amp;nbsp; Meetings&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-body"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;h3&gt;Meeting Intelligence&lt;/h3&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;p&gt;Structured minutes and action logs from every meeting, produced in real time. Decisions captured, actions assigned, and records filed — before the call has even ended.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="feat-tag"&gt;Live&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="junior-block"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="jb-left"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;span class="s-label"&gt;Foresight Junior&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;h2 class="s-h2"&gt;Your AI Project Assistant.&lt;/h2&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;p class="jb-em"&gt;Available 24/7. Never misses a thing.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;p class="jb-body"&gt;Foresight Junior carries the depth of a Senior Project Director with two decades of engineering experience. He understands PRINCE2, APM, and NEC4 contracts — and your specific projects inside out. Ask anything in plain English and receive a senior-level response in seconds.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;a href="https://foresight.bomflux.com" class="btn-white" style="font-size:.84rem;padding:11px 22px;display:inline-block" target="_blank"&gt;Meet Foresight Junior →&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="jb-right"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="cap"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div class="cap-n"&gt;01&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="cap-t"&gt;Instant project analysis&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="cap-d"&gt;Ask about any project and receive a detailed breakdown — budget trajectory, risk exposure, and recommended actions — within seconds.&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="cap"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div class="cap-n"&gt;02&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="cap-t"&gt;Document drafting&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="cap-d"&gt;NEC4 Early Warning Notices, client communications, and status updates — written in your voice, to your standards, at a moment's notice.&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="cap"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div class="cap-n"&gt;03&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="cap-t"&gt;Live meeting minutes&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="cap-d"&gt;Listens to your meetings in real time and produces professional minutes and action logs — ready before the call has ended.&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/div&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;!-- PRICING --&gt;</span></p>
+<p class="p4"><span class="s3">&lt;div id="page-pricing" class="page"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="page-wrap"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;span class="s-label"&gt;Pricing&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;h2 class="s-h2"&gt;Simple, transparent pricing.&lt;/h2&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;p class="s-sub" style="margin-bottom:0"&gt;Start free for 14 days. No credit card required. Cancel anytime.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="price-grid"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="pc"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-tier"&gt;Starter&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-price"&gt;&lt;sup&gt;£&lt;/sup&gt;399&lt;sub&gt;/mo&lt;/sub&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-per"&gt;per month, billed monthly&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-div"&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;ul class="pc-feats"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Up to 50 active projects&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Up to 30 team members&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Foresight Junior AI agent&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;AI Risk Centre&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Financial performance tracking&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Meeting Intelligence&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Email support&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/ul&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;a href="https://foresight.bomflux.com/signup" class="btn-pc-g" target="_blank"&gt;Start Free Trial&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="pc pop"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pop-tag"&gt;Most Popular&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-tier"&gt;Professional&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-price"&gt;&lt;sup&gt;£&lt;/sup&gt;599&lt;sub&gt;/mo&lt;/sub&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-per"&gt;per month, billed monthly&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-div"&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;ul class="pc-feats"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Unlimited projects&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Unlimited team members&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Everything in Starter&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Company branding&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Priority support&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Onboarding session included&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/ul&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;a href="https://foresight.bomflux.com/signup" class="btn-pc-w" target="_blank"&gt;Start Free Trial&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="pc"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-tier"&gt;Enterprise&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-price" style="font-size:1.9rem;letter-spacing:-.02em"&gt;Custom&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-per"&gt;tailored to your organisation&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="pc-div"&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;ul class="pc-feats"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Everything in Professional&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Dedicated account manager&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;Custom integrations&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;li&gt;SLA guarantee&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/ul&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;a href="mailto:michaelghatas@bomflux.com" class="btn-pc-g"&gt;Contact Us&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="price-note"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="pn"&gt;&lt;strong&gt;14-day&lt;/strong&gt; free trial&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="pn"&gt;&lt;strong&gt;No&lt;/strong&gt; credit card required&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;span class="pn"&gt;&lt;strong&gt;Cancel&lt;/strong&gt; anytime&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/div&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;!-- CONTACT --&gt;</span></p>
+<p class="p4"><span class="s3">&lt;div id="page-contact" class="page"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="page-wrap"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;span class="s-label"&gt;Contact&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;h2 class="s-h2"&gt;Get in touch.&lt;/h2&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="contact-grid"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div class="contact-left"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;p&gt;We're a small, focused team and we respond promptly. Whether you'd like to arrange a demo, discuss pricing, or find out whether Foresight is the right fit for your firm — reach out directly.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;div class="clinks"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;a href="mailto:michaelghatas@bomflux.com" class="clink"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="clink-l"&gt;&lt;span class="clink-type"&gt;Email&lt;/span&gt;&lt;span class="clink-val"&gt;michaelghatas@bomflux.com&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;span class="clink-arrow"&gt;→&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;a href="https://foresight.bomflux.com" class="clink" target="_blank"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="clink-l"&gt;&lt;span class="clink-type"&gt;Live Demo&lt;/span&gt;&lt;span class="clink-val"&gt;foresight.bomflux.com&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;span class="clink-arrow"&gt;→&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;a href="https://linkedin.com" class="clink" target="_blank"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;div class="clink-l"&gt;&lt;span class="clink-type"&gt;LinkedIn&lt;/span&gt;&lt;span class="clink-val"&gt;BomFlux on LinkedIn&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;span class="clink-arrow"&gt;→&lt;/span&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;form onsubmit="handleSubmit(event)"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div class="form-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;label class="form-label"&gt;Name&lt;/label&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;input type="text" class="form-input" placeholder="Your name" required&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div class="form-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;label class="form-label"&gt;Email&lt;/label&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;input type="email" class="form-input" placeholder="you@company.com" required&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;div class="form-row"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;label class="form-label"&gt;Message&lt;/label&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">            </span>&lt;textarea class="form-textarea" placeholder="How can we help?"&gt;&lt;/textarea&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">          </span>&lt;button type="submit" class="btn-submit"&gt;Send Message&lt;/button&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;/form&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/div&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;!-- FOOTER --&gt;</span></p>
+<p class="p4"><span class="s3">&lt;footer&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;div class="fi"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;img src="data:image/png;base64,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" alt="BomFlux" class="f-logo"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;p class="f-copy"&gt;© 2025 BomFlux Ltd. All rights reserved.&lt;/p&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;ul class="f-links"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;li&gt;&lt;a href="https://foresight.bomflux.com/terms" target="_blank"&gt;Terms&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;li&gt;&lt;a href="https://foresight.bomflux.com/privacy" target="_blank"&gt;Privacy&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;li&gt;&lt;a href="mailto:michaelghatas@bomflux.com"&gt;Contact&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/ul&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;div class="f-social"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;a href="https://linkedin.com" target="_blank"&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>&lt;svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"&gt;&lt;path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/&gt;&lt;circle cx="4" cy="4" r="2"/&gt;&lt;/svg&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">        </span>LinkedIn</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">      </span>&lt;/a&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/footer&gt;</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">&lt;script&gt;</span></p>
+<p class="p4"><span class="s3">function showPage(id) {</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>document.querySelectorAll('.page').forEach(p =&gt; {</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>p.classList.remove('active');</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">    </span>p.style.display = 'none';</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-links button').forEach(b =&gt; b.classList.remove('active'));</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>var target = document.getElementById('page-' + id);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>target.style.display = id === 'home' ? 'flex' : 'block';</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>target.classList.add('active');</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>var btns = document.querySelectorAll('.nav-links button');</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>var map = {home:0, foresight:1, pricing:2, contact:3};</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>if (map[id] !== undefined) btns[map[id]].classList.add('active');</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>window.scrollTo(0,0);</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>document.body.scrollTop = 0;</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>document.documentElement.scrollTop = 0;</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">// Init</span></p>
+<p class="p4"><span class="s3">document.querySelectorAll('.page').forEach(p =&gt; { p.style.display = 'none'; });</span></p>
+<p class="p4"><span class="s3">var h = document.getElementById('page-home');</span></p>
+<p class="p4"><span class="s3">h.style.display = 'flex';</span></p>
+<p class="p4"><span class="s3">h.classList.add('active');</span></p>
+<p class="p5"><span class="s3"></span><br></p>
+<p class="p4"><span class="s3">function handleSubmit(e) {</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>e.preventDefault();</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>var btn = e.target.querySelector('.btn-submit');</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>btn.textContent = 'Sent';</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>btn.style.background = '#fff';</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>btn.style.color = '#000';</span></p>
+<p class="p4"><span class="s3"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; { btn.textContent = 'Send Message'; }, 3000);</span></p>
+<p class="p4"><span class="s3">}</span></p>
+<p class="p4"><span class="s3">&lt;/script&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/body&gt;</span></p>
+<p class="p4"><span class="s3">&lt;/html&gt;</span></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p7"><span class="s3"></span><br></p>
+<p class="p6"><span class="s3"></span><br></p>
+<p class="p8"><span class="s3"></span><br></p>
+<p class="p9"><span class="s3"></span><br></p>
+<p class="p10"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p12"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p13"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
+<p class="p14"><span class="s3"></span><br></p>
+<p class="p15"><span class="s3"></span><br></p>
+<p class="p16"><span class="s3"></span><br></p>
+<p class="p16"><span class="s3"></span><br></p>
+<p class="p16"><span class="s3"></span><br></p>
+<p class="p11"><span class="s3"></span><br></p>
 </body>
 </html>
