@@ -22,7 +22,7 @@ body{font-family:'Inter',sans-serif;background:#0d1117;color:#e6edf3;-webkit-fon
 
 /* NAV */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+  position:fixed;top:0;left:0;right:0;z-index:1000;
   height:60px;display:flex;align-items:center;justify-content:space-between;
   padding:0 48px;
   background:rgba(13,17,23,0.95);
@@ -359,15 +359,15 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
     <a href="https://foresight.bomflux.com" class="btn-nav-ghost" target="_blank">Demo</a>
     <a href="https://foresight.bomflux.com/signup" class="btn-nav-solid" target="_blank">Start Free Trial</a>
   </div>
-  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Open menu">&#9776;</button>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMenu()" aria-label="Open menu">&#9776;</button>
 </nav>
 
 <div class="nav-mobile-menu" id="nav-mobile">
   <div class="nav-mobile-items" id="nav-mobile-items">
-    <button class="active" onclick="showPage('home');closeMobileMenu()">Home</button>
-    <button onclick="showPage('foresight');closeMobileMenu()">Foresight</button>
-    <button onclick="showPage('pricing');closeMobileMenu()">Pricing</button>
-    <button onclick="showPage('contact');closeMobileMenu()">Contact</button>
+    <button class="active" onclick="showPage('home');closeMenu()">Home</button>
+    <button onclick="showPage('foresight');closeMenu()">Foresight</button>
+    <button onclick="showPage('pricing');closeMenu()">Pricing</button>
+    <button onclick="showPage('contact');closeMenu()">Contact</button>
   </div>
   <a href="https://foresight.bomflux.com/signup" class="nav-mobile-cta" target="_blank">Start Free Trial</a>
 </div>
@@ -736,14 +736,14 @@ h.style.display = 'flex';
 h.classList.add('active');
 
 // Mobile menu
-function toggleMobileMenu() {
+function toggleMenu() {
   var menu = document.getElementById('nav-mobile');
   var btn = document.getElementById('nav-hamburger');
   var open = menu.classList.toggle('open');
   btn.innerHTML = open ? '&#x2715;' : '&#9776;';
 }
 
-function closeMobileMenu() {
+function closeMenu() {
   document.getElementById('nav-mobile').classList.remove('open');
   document.getElementById('nav-hamburger').innerHTML = '&#9776;';
 }
