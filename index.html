@@ -641,42 +641,31 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
           </a>
         </div>
       </div>
+      <div>
+        <form id="contact-form" onsubmit="submitContactForm(event)">
+          <div class="form-row">
+            <label class="form-label">Name</label>
+            <input type="text" id="cf-name" class="form-input" placeholder="Your name" required>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Email</label>
+            <input type="email" id="cf-email" class="form-input" placeholder="you@company.com" required>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Company</label>
+            <input type="text" id="cf-company" class="form-input" placeholder="Your firm" required>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Message</label>
+            <textarea id="cf-message" class="form-textarea" placeholder="How can we help?"></textarea>
+          </div>
+          <button type="submit" id="cf-submit" class="btn-submit">Send Message</button>
+        </form>
+        <div id="cf-feedback" class="cf-feedback"></div>
+      </div>
     </div>
   </div>
 </div>
-
-<!-- CONTACT SECTION -->
-<section class="contact-section" id="contact-form-anchor">
-  <div class="cs-inner">
-    <div class="cs-left">
-      <span class="s-label">Get in Touch</span>
-      <h2 class="s-h2">Questions? Ready for a demo?</h2>
-      <p class="cs-sub">Have a question or want to book a demo? We'll get back to you within 24 hours.</p>
-    </div>
-    <div>
-      <form id="contact-form" onsubmit="submitContactForm(event)">
-        <div class="form-row">
-          <label class="form-label">Name</label>
-          <input type="text" id="cf-name" class="form-input" placeholder="Your name" required>
-        </div>
-        <div class="form-row">
-          <label class="form-label">Email</label>
-          <input type="email" id="cf-email" class="form-input" placeholder="you@company.com" required>
-        </div>
-        <div class="form-row">
-          <label class="form-label">Company</label>
-          <input type="text" id="cf-company" class="form-input" placeholder="Your firm" required>
-        </div>
-        <div class="form-row">
-          <label class="form-label">Message</label>
-          <textarea id="cf-message" class="form-textarea" placeholder="How can we help?"></textarea>
-        </div>
-        <button type="submit" id="cf-submit" class="btn-submit">Send Message</button>
-      </form>
-      <div id="cf-feedback" class="cf-feedback"></div>
-    </div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
