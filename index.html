@@ -792,9 +792,15 @@ async function submitContactForm(e) {
     });
     var data = await res.json();
     if (res.ok && data.success) {
-      fb.className = 'cf-feedback success';
-      fb.textContent = "Thank you! We’ll be in touch within 24 hours.";
-      document.getElementById('contact-form').reset();
+      document.getElementById(‘contact-form’).reset();
+      document.getElementById(‘contact-form’).style.display = ‘none’;
+      fb.className = ‘cf-feedback success’;
+      fb.innerHTML = ‘&#10003; Message sent! We\’ll be in touch within 24 hours.’;
+      setTimeout(function() {
+        fb.className = ‘cf-feedback’;
+        fb.textContent = ‘’;
+        document.getElementById(‘contact-form’).style.display = ‘block’;
+      }, 5000);
     } else {
       throw new Error(data.error || 'error');
     }

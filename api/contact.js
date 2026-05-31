@@ -20,8 +20,8 @@ export default async function handler(req, res) {
 
   try {
     await resend.emails.send({
-      from: 'BomFlux Website <noreply@bomflux.com>',
-      to: 'michaelghatas@bomflux.com',
+      from: 'BomFlux Website <support@bomflux.com>',
+      to: 'support@bomflux.com',
       subject: `New enquiry from ${name} at ${company} — BomFlux Website`,
       html: `
         <div style="font-family:sans-serif;max-width:560px;color:#1a1a1a">
