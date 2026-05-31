@@ -96,28 +96,55 @@ nav{
 .btn-outline-w:hover{border-color:rgba(255,255,255,.4);transform:translateY(-1px)}
 .hero-note{font-size:.75rem;color:var(--muted);letter-spacing:-.01em}
 
-/* Hero metric cards */
-.hero-right{position:relative;z-index:1;display:flex;flex-direction:column;gap:12px;padding-left:64px}
-.hcard{background:#111;border:1px solid var(--border);border-radius:12px;padding:20px 22px}
-.hcard-label{
-  font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:12px;
-  display:flex;justify-content:space-between;align-items:center;
+/* Hero preview frame */
+.hero-right{position:relative;z-index:1;padding-left:56px}
+.pv-frame{
+  background:#0d0d0d;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03),inset 0 1px 0 rgba(255,255,255,.06);
 }
-.hcard-badge{
-  font-size:.6rem;font-weight:500;padding:2px 8px;border-radius:100px;
-  background:rgba(255,255,255,.05);color:var(--muted);letter-spacing:.06em;
+.pv-chrome{
+  height:38px;background:#161616;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;padding:0 14px;gap:10px;
+  position:relative;
 }
-.hcard-badge.live{color:#4ade80;background:rgba(74,222,128,.1)}
-.hcard-badge.warn{color:#fbbf24;background:rgba(251,191,36,.1)}
-.hcard-val{font-size:2.4rem;font-weight:700;letter-spacing:-.04em;color:#fff;line-height:1;margin-bottom:4px}
-.hcard-sub{font-size:.75rem;color:var(--muted);font-weight:300}
-.hcard-row{display:flex;gap:24px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.hcard-stat{display:flex;flex-direction:column;gap:2px}
-.hcard-stat-n{font-size:.9rem;font-weight:600;color:var(--light)}
-.hcard-stat-l{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.hcard-alert{font-size:.8rem;color:var(--light);line-height:1.55;font-weight:300}
-.hcard-alert-time{font-size:.65rem;color:var(--muted);margin-top:8px}
+.pv-dots{display:flex;gap:5px}
+.pv-dots span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.1)}
+.pv-title{font-size:.7rem;font-weight:500;color:var(--muted);letter-spacing:.04em;position:absolute;left:50%;transform:translateX(-50%)}
+.pv-badge{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;background:rgba(255,255,255,.04);padding:2px 8px;border-radius:100px;margin-left:auto}
+.pv-body{padding:14px;display:flex;flex-direction:column;gap:10px}
+.ui-panel{background:#141414;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 16px}
+.ui-panel-warn{border-color:rgba(251,191,36,.18);background:#131100}
+.ui-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ui-head-label{font-size:.62rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:#555}
+.ui-live-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,.6);flex-shrink:0}
+.ui-stats{display:flex;align-items:center}
+.ui-stat{flex:1;text-align:center;padding:6px 0}
+.ui-vline{width:1px;height:28px;background:rgba(255,255,255,.07);flex-shrink:0}
+.ui-stat-n{font-size:1.5rem;font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:2px;color:#fff}
+.ui-stat-k{font-size:.58rem;text-transform:uppercase;letter-spacing:.07em;color:#555}
+.c-green{color:#4ade80}.c-amber{color:#fbbf24}.c-red{color:#f87171}
+.ui-progress-track{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:12px;overflow:hidden}
+.ui-progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:2px}
+.ui-progress-label{display:flex;justify-content:space-between;margin-top:5px}
+.ui-progress-label span{font-size:.58rem;color:#444;letter-spacing:.04em}
+.ui-risk-label{display:flex;align-items:center;gap:6px}
+.ui-risk-pip{width:6px;height:6px;border-radius:50%;background:#fbbf24;flex-shrink:0}
+.ui-time{font-size:.6rem;color:#444;background:rgba(255,255,255,.04);padding:2px 7px;border-radius:100px}
+.ui-risk-project{font-size:.8rem;font-weight:600;color:#ccc;margin-bottom:4px}
+.ui-risk-msg{font-size:.72rem;color:#666;font-weight:300;line-height:1.5;margin-bottom:10px}
+.ui-risk-actions{display:flex;gap:6px}
+.ui-btn-sm{font-size:.62rem;font-weight:500;padding:4px 10px;border-radius:5px;background:rgba(255,255,255,.08);color:#bbb;cursor:default}
+.ui-btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.07);color:#555}
+.ui-delivered{font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:100px;background:rgba(74,222,128,.1);color:#4ade80;letter-spacing:.04em}
+.ui-report-list{display:flex;flex-direction:column;gap:7px}
+.ui-report-item{display:flex;align-items:center;gap:8px}
+.ui-tick{font-size:.65rem;color:#4ade80;flex-shrink:0;width:12px;text-align:center}
+.ui-report-nm{font-size:.72rem;color:#bbb;font-weight:300}
+.ui-report-dim .ui-tick{color:#333}
+.ui-report-dim .ui-report-nm{color:#444}
 
 /* Strip */
 .strip{background:#111;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;white-space:nowrap}
@@ -224,7 +251,7 @@ nav{
 footer{background:#070707;border-top:1px solid var(--border);padding:40px 48px}
 .fi{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .f-brand{display:flex;flex-direction:column;gap:8px}
-.f-logo{height:40px;width:auto;opacity:.65;image-rendering:-webkit-optimize-contrast}
+.f-logo{height:26px;width:auto;opacity:.45;image-rendering:-webkit-optimize-contrast}
 .f-copy{font-size:.72rem;color:#444;margin-top:2px}
 .f-links{display:flex;gap:20px;list-style:none}
 .f-links a{font-size:.75rem;color:#444;text-decoration:none;transition:color .15s}
@@ -288,25 +315,54 @@ footer{background:#070707;border-top:1px solid var(--border);padding:40px 48px}
       <p class="hero-note">14-day free trial &nbsp;·&nbsp; No card required &nbsp;·&nbsp; Cancel anytime</p>
     </div>
     <div class="hero-right">
-      <div class="hcard">
-        <div class="hcard-label">Active Portfolio <span class="hcard-badge live">Live</span></div>
-        <div class="hcard-val">47</div>
-        <div class="hcard-sub">projects monitored</div>
-        <div class="hcard-row">
-          <div class="hcard-stat"><span class="hcard-stat-n">38</span><span class="hcard-stat-l">On track</span></div>
-          <div class="hcard-stat"><span class="hcard-stat-n">7</span><span class="hcard-stat-l">At risk</span></div>
-          <div class="hcard-stat"><span class="hcard-stat-n">2</span><span class="hcard-stat-l">Critical</span></div>
+      <div class="pv-frame">
+        <div class="pv-chrome">
+          <div class="pv-dots"><span></span><span></span><span></span></div>
+          <span class="pv-title">Foresight</span>
+          <span class="pv-badge">Preview</span>
         </div>
-      </div>
-      <div class="hcard">
-        <div class="hcard-label">Risk Alert <span class="hcard-badge warn">14h ago</span></div>
-        <div class="hcard-alert">Bridge Deck Phase 3 — budget overrun projected in 18 days if current spend velocity continues.</div>
-        <div class="hcard-alert-time">Flagged by Foresight · 3 team members notified automatically</div>
-      </div>
-      <div class="hcard">
-        <div class="hcard-label">Weekly Reports <span class="hcard-badge">Monday 08:00</span></div>
-        <div class="hcard-alert">14 reports generated and distributed this morning across all active projects.</div>
-        <div class="hcard-alert-time">Next run in 6 days · 0 manual effort required</div>
+        <div class="pv-body">
+          <div class="ui-panel">
+            <div class="ui-panel-head">
+              <span class="ui-head-label">Portfolio Overview</span>
+              <span class="ui-live-dot"></span>
+            </div>
+            <div class="ui-stats">
+              <div class="ui-stat"><div class="ui-stat-n">47</div><div class="ui-stat-k">Projects</div></div>
+              <div class="ui-vline"></div>
+              <div class="ui-stat"><div class="ui-stat-n c-green">38</div><div class="ui-stat-k">On track</div></div>
+              <div class="ui-vline"></div>
+              <div class="ui-stat"><div class="ui-stat-n c-amber">7</div><div class="ui-stat-k">At risk</div></div>
+              <div class="ui-vline"></div>
+              <div class="ui-stat"><div class="ui-stat-n c-red">2</div><div class="ui-stat-k">Critical</div></div>
+            </div>
+            <div class="ui-progress-track"><div class="ui-progress-fill" style="width:81%"></div></div>
+            <div class="ui-progress-label"><span>Portfolio health</span><span>81%</span></div>
+          </div>
+          <div class="ui-panel ui-panel-warn">
+            <div class="ui-panel-head">
+              <div class="ui-risk-label"><span class="ui-risk-pip"></span><span class="ui-head-label">Risk Detected</span></div>
+              <span class="ui-time">2h ago</span>
+            </div>
+            <div class="ui-risk-project">A421 Bypass — Section 4</div>
+            <div class="ui-risk-msg">Budget overrun projected in 18 days. Spend velocity 23% above forecast.</div>
+            <div class="ui-risk-actions">
+              <span class="ui-btn-sm">View Report</span>
+              <span class="ui-btn-sm ui-btn-ghost">Assign</span>
+            </div>
+          </div>
+          <div class="ui-panel">
+            <div class="ui-panel-head">
+              <span class="ui-head-label">Weekly Reports</span>
+              <span class="ui-delivered">14 Delivered</span>
+            </div>
+            <div class="ui-report-list">
+              <div class="ui-report-item"><span class="ui-tick">&#10003;</span><span class="ui-report-nm">A421 Bypass — Week 34 Update</span></div>
+              <div class="ui-report-item"><span class="ui-tick">&#10003;</span><span class="ui-report-nm">Waterfront Phase 2 — Status</span></div>
+              <div class="ui-report-item ui-report-dim"><span class="ui-tick">&#10003;</span><span class="ui-report-nm">+ 12 more reports distributed</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
