@@ -270,7 +270,7 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
 
 /* Hamburger / mobile menu */
 .nav-hamburger{display:none;background:none;border:none;color:var(--light);font-size:1.5rem;cursor:pointer;padding:4px;line-height:1;flex-shrink:0;z-index:201;position:relative}
-.nav-mobile-menu{
+.nav-mobile-menu,#mobile-menu{
   position:fixed;top:60px;left:0;right:0;z-index:198;
   background:#0d1117;
   border-bottom:1px solid var(--border);
@@ -279,7 +279,7 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
   transition:opacity .15s ease,visibility .15s ease,transform .15s ease;
   max-height:calc(100vh - 60px);overflow-y:auto;
 }
-.nav-mobile-menu.open{
+.nav-mobile-menu.open,#mobile-menu.open{
   visibility:visible;opacity:1;pointer-events:auto;
   transform:translateY(0);
 }
@@ -359,15 +359,15 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
     <a href="https://foresight.bomflux.com" class="btn-nav-ghost" target="_blank">Demo</a>
     <a href="https://foresight.bomflux.com/signup" class="btn-nav-solid" target="_blank">Start Free Trial</a>
   </div>
-  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMenu()" aria-label="Open menu">&#9776;</button>
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">&#9776;</button>
 </nav>
 
-<div class="nav-mobile-menu" id="nav-mobile">
+<div class="nav-mobile-menu" id="mobile-menu">
   <div class="nav-mobile-items" id="nav-mobile-items">
-    <button class="active" onclick="showPage('home');closeMenu()">Home</button>
-    <button onclick="showPage('foresight');closeMenu()">Foresight</button>
-    <button onclick="showPage('pricing');closeMenu()">Pricing</button>
-    <button onclick="showPage('contact');closeMenu()">Contact</button>
+    <button class="active" onclick="document.getElementById('mobile-menu').classList.remove('open'); document.getElementById('hamburger').innerHTML='&#9776;'; showPage('home')">Home</button>
+    <button onclick="document.getElementById('mobile-menu').classList.remove('open'); document.getElementById('hamburger').innerHTML='&#9776;'; showPage('foresight')">Foresight</button>
+    <button onclick="document.getElementById('mobile-menu').classList.remove('open'); document.getElementById('hamburger').innerHTML='&#9776;'; showPage('pricing')">Pricing</button>
+    <button onclick="document.getElementById('mobile-menu').classList.remove('open'); document.getElementById('hamburger').innerHTML='&#9776;'; showPage('contact')">Contact</button>
   </div>
   <a href="https://foresight.bomflux.com/signup" class="nav-mobile-cta" target="_blank">Start Free Trial</a>
 </div>
@@ -641,10 +641,6 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
           </a>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:center">
-        <p style="font-size:.9rem;color:var(--muted);font-weight:300;line-height:1.75;margin-bottom:24px">Use the form below to send us a message — we'll reply within 24 hours.</p>
-        <a href="#contact-form-anchor" class="btn-white" style="display:inline-block;font-size:.84rem;padding:11px 22px;text-decoration:none" onclick="document.getElementById('contact-form-anchor').scrollIntoView({behavior:'smooth'});return false;">Send a Message ↓</a>
-      </div>
     </div>
   </div>
 </div>
@@ -707,12 +703,12 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
 var pageMap = {home:0, foresight:1, pricing:2, contact:3};
 
 function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => {
+  document.querySelectorAll('.page').forEach(function(p) {
     p.classList.remove('active');
     p.style.display = 'none';
   });
-  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('#nav-mobile-items button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('#nav-mobile-items button').forEach(function(b) { b.classList.remove('active'); });
 
   var target = document.getElementById('page-' + id);
   target.style.display = id === 'home' ? 'flex' : 'block';
@@ -730,23 +726,16 @@ function showPage(id) {
 }
 
 // Init
-document.querySelectorAll('.page').forEach(p => { p.style.display = 'none'; });
+document.querySelectorAll('.page').forEach(function(p) { p.style.display = 'none'; });
 var h = document.getElementById('page-home');
 h.style.display = 'flex';
 h.classList.add('active');
 
 // Mobile menu
-function toggleMenu() {
-  var menu = document.getElementById('nav-mobile');
-  var btn = document.getElementById('nav-hamburger');
-  var open = menu.classList.toggle('open');
-  btn.innerHTML = open ? '&#x2715;' : '&#9776;';
-}
-
-function closeMenu() {
-  document.getElementById('nav-mobile').classList.remove('open');
-  document.getElementById('nav-hamburger').innerHTML = '&#9776;';
-}
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+  this.innerHTML = document.getElementById('mobile-menu').classList.contains('open') ? '&#x2715;' : '&#9776;';
+});
 
 // Contact section form
 async function submitContactForm(e) {
@@ -774,18 +763,18 @@ async function submitContactForm(e) {
     var res = await fetch('/api/contact', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({name, email, company, message})
+      body: JSON.stringify({name: name, email: email, company: company, message: message})
     });
     var data = await res.json();
     if (res.ok && data.success) {
-      document.getElementById(‘contact-form’).reset();
-      document.getElementById(‘contact-form’).style.display = ‘none’;
-      fb.className = ‘cf-feedback success’;
-      fb.innerHTML = ‘&#10003; Message sent! We\’ll be in touch within 24 hours.’;
+      document.getElementById('contact-form').reset();
+      document.getElementById('contact-form').style.display = 'none';
+      fb.className = 'cf-feedback success';
+      fb.innerHTML = '&#10003; Message sent! We\'ll be in touch within 24 hours.';
       setTimeout(function() {
-        fb.className = ‘cf-feedback’;
-        fb.textContent = ‘’;
-        document.getElementById(‘contact-form’).style.display = ‘block’;
+        fb.className = 'cf-feedback';
+        fb.textContent = '';
+        document.getElementById('contact-form').style.display = 'block';
       }, 5000);
     } else {
       throw new Error(data.error || 'error');
