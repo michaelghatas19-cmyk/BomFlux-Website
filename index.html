@@ -274,8 +274,9 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
   display:none;position:fixed;top:60px;left:0;right:0;z-index:199;
   background:rgba(13,17,23,0.98);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
+  pointer-events:none;
 }
-.nav-mobile-menu.open{display:block}
+.nav-mobile-menu.open{display:block;pointer-events:auto}
 .nav-mobile-items{display:flex;flex-direction:column;padding:8px 0}
 .nav-mobile-items button{
   display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
@@ -620,8 +621,8 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
       <div class="contact-left">
         <p>We're a small, focused team and we respond promptly. Whether you'd like to arrange a demo, discuss pricing, or find out whether Foresight is the right fit for your firm — reach out directly.</p>
         <div class="clinks">
-          <a href="mailto:michaelghatas@bomflux.com" class="clink">
-            <div class="clink-l"><span class="clink-type">Email</span><span class="clink-val">michaelghatas@bomflux.com</span></div>
+          <a href="mailto:support@bomflux.com" class="clink">
+            <div class="clink-l"><span class="clink-type">Email</span><span class="clink-val">support@bomflux.com</span></div>
             <span class="clink-arrow">→</span>
           </a>
           <a href="https://foresight.bomflux.com" class="clink" target="_blank">
@@ -634,29 +635,16 @@ footer{background:#080d13;border-top:1px solid var(--border);padding:40px 48px}
           </a>
         </div>
       </div>
-      <div>
-        <form onsubmit="handleSubmit(event)">
-          <div class="form-row">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-input" placeholder="Your name" required>
-          </div>
-          <div class="form-row">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" placeholder="you@company.com" required>
-          </div>
-          <div class="form-row">
-            <label class="form-label">Message</label>
-            <textarea class="form-textarea" placeholder="How can we help?"></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Send Message</button>
-        </form>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <p style="font-size:.9rem;color:var(--muted);font-weight:300;line-height:1.75;margin-bottom:24px">Use the form below to send us a message — we'll reply within 24 hours.</p>
+        <a href="#contact-form-anchor" class="btn-white" style="display:inline-block;font-size:.84rem;padding:11px 22px;text-decoration:none" onclick="document.getElementById('contact-form-anchor').scrollIntoView({behavior:'smooth'});return false;">Send a Message ↓</a>
       </div>
     </div>
   </div>
 </div>
 
 <!-- CONTACT SECTION -->
-<section class="contact-section">
+<section class="contact-section" id="contact-form-anchor">
   <div class="cs-inner">
     <div class="cs-left">
       <span class="s-label">Get in Touch</span>
@@ -752,14 +740,6 @@ function toggleMobileMenu() {
 function closeMobileMenu() {
   document.getElementById('nav-mobile').classList.remove('open');
   document.getElementById('nav-hamburger').innerHTML = '&#9776;';
-}
-
-// Contact page legacy form
-function handleSubmit(e) {
-  e.preventDefault();
-  var btn = e.target.querySelector('.btn-submit');
-  btn.textContent = 'Sent';
-  setTimeout(() => { btn.textContent = 'Send Message'; }, 3000);
 }
 
 // Contact section form
